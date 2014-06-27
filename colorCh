@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <title>Цюрюпа В. С.</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <canvas width="500" height="500" id="can1"></canvas>
+        <script>  
+            var speed = 30;
+            var ID = "can1";
+            
+            document.getElementById(ID).addEventListener('click',ClickA, false);            
+            
+            function rand(min, max)
+            {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+            
+            function DrawL(x,y,h,el,col)
+            {   
+                var hol = el.getContext('2d'); 
+                hol.beginPath();
+                hol.fillStyle = col;
+                hol.trokeStyle = hol.fillStyle;
+                hol.fillRect(x,y-(h/2),h,h);               
+                for (j = x-h; j >= 0 || y-(h/2)-(x-j) >= 0; j -= h)
+                {   
+                    hol.fillRect(j,y-(h/2)-(x-j),h,h); 
+                }                    
+                for (j = x-h; j >= 0 || y-(h/2)+(x-j)+h <= el.height; j -= h)
+                {   
+                    hol.fillRect(j,y-(h/2)+(x-j),h,h); 
+                }                   
+                hol.closePath();  
+                var diag = 0;
+                if(y < el.height / 2)
+                {
+                    diag = el.height - y;
+                }
+                else
+                {
+                    diag = y;
+                }
+                
+                if(x < el.width+diag)
+                {                    
+                    setTimeout(function (){DrawL(x+h,y,h,el,col);},speed);
+                }
+            }
+            
+            function ClickA(event)
+            {
+                var ab = 10; 
+                var color = 'rgb('+rand(0,255)+','+rand(0,255)+','+rand(0,255)+')';
+                var Y = (event.layerY == undefined ? event.offsetY : event.layerY) + 1;
+                
+                var pic = document.getElementById(ID);
+                setTimeout(function (){DrawL(0,Y,ab,pic,color);},speed);
+            }
+        </script>
+    </body>
+</html>
